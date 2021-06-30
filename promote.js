@@ -16,14 +16,14 @@ function submit(event){
   let formResponse = event.response;
   let prefilledUrl = buildURL(formResponse, sessionFormId, itemIdMap);
 
-  //sendEmailNotification(formResponse, prefilledUrl);
+  sendEmailNotification(formResponse, prefilledUrl);
 }
 
 
 function testSubmit() {
   let form = FormApp.openById(promoteFormId);
   submit({
-    "response": form.getResponses()[0],
+    "response": form.getResponses()[form.getResponses().length-1],
     "source": form
   });
 }
@@ -80,16 +80,18 @@ function sendEmailNotification(formResponse, prefilledUrl){
   var email = formResponse.getRespondentEmail();
 
   GmailApp.sendEmail(
-    'bvz2001@gmail.com', //email,
+    email,
     '"Promote you MeasureCamp talk" form submitted',
     '',
     {
-      name: 'MeasureCamp',
-      //from: 'noreply@measurecamp.org',
+      from: 'europe@measurecamp.org',
+      name: 'MeasureCamp Europe',
       htmlBody: `Happy to see you as a speaker!<br>
-      During a welcome session of the MeasureCamp event a session board will be open for registrations.<br>
-      You will be able to use <a href="${prefilledUrl}">your personalised pre-filled link</a> (${prefilledUrl}) to simply select a timeslot for your talk.<br>
+      During a welcome session of the MeasureCamp event a session board will be opened for registrations.<br>
+      You will need to use <a href="${prefilledUrl}">your personalised pre-filled link</a> and simply select a timeslot for your talk.<br>
       See you soon.`
     }
   );
 }
+
+
